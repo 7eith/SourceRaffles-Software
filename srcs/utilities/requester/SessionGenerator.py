@@ -1,0 +1,15 @@
+"""********************************************************************"""
+"""                                                                    """
+"""   [requester] SessionGenerator.py                                  """
+"""                                                                    """
+"""   Author: seith <seith@synezia.com>                                """
+"""                                                                    """
+"""   Created: 10/09/2021 05:36:33                                     """
+"""   Updated: 10/09/2021 05:37:16                                     """
+"""                                                                    """
+"""   Synezia Soft. (c) 2021                                           """
+"""                                                                    """
+"""********************************************************************"""
+
+def getRandomUserAgent():
+    return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"

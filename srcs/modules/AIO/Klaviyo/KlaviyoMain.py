@@ -1,0 +1,91 @@
+"""********************************************************************"""
+"""                                                                    """
+"""   [Klaviyo] KlaviyoMain.py                                         """
+"""                                                                    """
+"""   Author: seith <seith@synezia.com>                                """
+"""                                                                    """
+"""   Created: 07/10/2021 04:35:56                                     """
+"""   Updated: 07/10/2021 04:36:47                                     """
+"""                                                                    """
+"""   Synezia Soft. (c) 2021                                           """
+"""                                                                    """
+"""********************************************************************"""
+
+
+from user.User import User
+from modules.Controller import ModuleController
+
+import questionary
+import os
+
+from utilities import Logger
+from questionary import Choice
+
+class KlaviyoMain():
+
+    def initializatingModule(self):
+        self.moduleName = "Klaviyo"
+        self.module = ModuleController().getModule(self.moduleName)
+
+    def chooseSubmodule(self):
+
+        Choices = []
+
+        for module in self.module['subModules']:
+
+            if (User().hasPermissions(module['permission'])):
+                if (module['locked']):
+                    Choices.append(Choice(
+                        title=[
+                            ("class:purple", module['name']),
+                            ("class:text", " ["),
+                            ("class:red", "Locked"),
+                            ("class:text", "]")
+                        ],
+                        value={
+                            "slug": module['slug'],
+                        },
+                        disabled=module['locked']
+                    ))
+                else:
+                    Choices.append(Choice(
+                    title=[
+                        ("class:purple", module['name'])
+                    ],
+                    value={
+                        "slug": module['slug'],
+                    }
+                ))
+
+        Choices.append(Choice(
+            title=[("class:red", "Exit")],
+            value={
+                "slug": "Exit"
+            }
+        ))
+
+        answer = questionary.select(
+            "Which modules do you want to launch?",
+            choices=Choices,
+        ).ask()
+
+        if answer is None:
+            return
+            
+        if answer['slug'] == "Scraper":
+            from .ScrapeForm import ScrapeForm
+            
+            ScrapeForm()
+            return (self.chooseSubmodule())
+
+        if answer['slug'] == "EnterForm":
+            from .EnterForm import EnterForm
+
+            EnterForm()
+            return (self.chooseSubmodule())
+        else:
+            return (None)
+
+    def __init__(self) -> None:
+        self.initializatingModule()
+        self.chooseSubmodule()
